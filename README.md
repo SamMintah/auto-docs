@@ -1,6 +1,9 @@
-# AI Documentation Generator
+# auto-docs
 
-🤖 An intelligent documentation generator that uses AI to automatically create comprehensive documentation for JavaScript/TypeScript projects.
+🤖 An intelligent CLI tool that automatically generates comprehensive documentation for JavaScript/TypeScript projects using AI.
+
+[![npm version](https://badge.fury.io/js/auto-docs.svg)](https://badge.fury.io/js/auto-docs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
@@ -8,7 +11,7 @@
 - 🧠 AI-Powered Documentation: Utilizes OpenAI's GPT-4 to generate intelligent and contextual documentation
 - 📝 Multiple Format Support: Outputs in both Markdown and JSDoc formats
 - 🔍 Smart Code Analysis: Automatically analyzes code structure, functions, classes, and relationships
-- ⚡ Easy to Use: Simple CLI interface for quick documentation generation
+- ⚡ Easy to Use: Simple CLI interface with interactive setup
 - 🎨 Customizable: Flexible configuration options to match your documentation needs
 - 📦 Project-Wide Support: Documents entire projects or individual files
 
@@ -16,92 +19,92 @@
 
 Before you begin, ensure you have:
 - Node.js (v14 or higher)
-- npm or yarn
-- OpenAI API key
+- OpenAI API key (you'll be prompted for this during setup)
 
-## Installation
+## Quick Start
 
-1. Clone the repository:
+1. Install in your project:
 ```bash
-git clone <your-repo-url>
-cd documentation-generator
+npm install auto-docs
 ```
 
-2. Install dependencies:
+2. Initialize auto-docs (this will guide you through the setup):
 ```bash
-npm install
+npx auto-docs init
 ```
 
-3. Set up your OpenAI API key:
-Create a `.env` file in the root directory:
+3. Generate documentation:
 ```bash
-OPENAI_API_KEY=your-api-key-here
+npm run docs
 ```
 
-4. Make the CLI executable:
-```bash
-chmod +x bin/generate-docs.js
-```
+That's it! Your documentation will be generated in the specified output directory (default: `./docs`).
 
-## Usage
+## Configuration
 
-### Basic Usage
-
-Generate documentation for a project or file:
-```bash
-./bin/generate-docs.js -p ./path/to/your/project
-```
-
-### Command Options
-
-- `-p, --path <path>`: Path to the project or file (required)
-- `-o, --output <path>`: Custom output directory (default: ./docs)
-- `-f, --format <format>`: Output format (markdown/jsdoc) (default: markdown)
-
-### Configuration
-
-Create a `.docgenrc.json` file in your project root to customize the behavior:
+During initialization (`auto-docs init`), you'll be guided through setting up your configuration. This creates a `.autodocs.json` file with your preferences:
 
 ```json
 {
+  "openai": {
+    "apiKey": "YOUR_OPENAI_API_KEY",
+    "model": "gpt-4",
+    "temperature": 0.7
+  },
   "output": {
     "format": "markdown",
     "directory": "./docs",
-    "createIndex": true,
-    "prettier": true
+    "createIndex": true
   },
   "parser": {
     "includePrivate": false,
     "includeTodos": true,
-    "parseComments": true,
     "filePatterns": ["**/*.js", "**/*.ts"],
-    "exclude": ["**/node_modules/**", "**/dist/**"]
-  },
-  "documentation": {
-    "includeExamples": true,
-    "includeTypes": true,
-    "groupByModule": true
+    "exclude": ["**/node_modules/**", "**/dist/**", "**/*.test.js"]
   }
 }
 ```
 
-## Project Structure
+### Configuration Options
 
+#### OpenAI Settings
+- `apiKey`: Your OpenAI API key
+- `model`: AI model to use (default: "gpt-4")
+- `temperature`: AI creativity level (0-1, default: 0.7)
+
+#### Output Settings
+- `format`: Documentation format ("markdown" or "jsdoc")
+- `directory`: Output directory path
+- `createIndex`: Generate index file (README.md)
+
+#### Parser Settings
+- `includePrivate`: Document private members
+- `includeTodos`: Include TODO comments
+- `filePatterns`: Files to process
+- `exclude`: Files to ignore
+
+## CLI Commands
+
+### Initialize Project
+```bash
+npx auto-docs init
 ```
-documentation-generator/
-├── bin/
-│   └── generate-docs.js      # CLI entry point
-├── src/
-│   ├── index.js             # Main entry point
-│   ├── parser/              # Code parsing
-│   │   └── codeParser.js
-│   ├── ai/                  # AI processing
-│   │   └── openaiProcessor.js
-│   └── utils/               # Utilities
-│       ├── config.js        # Configuration management
-│       └── fileHandler.js   # File operations
-└── tests/                   # Test files
+- Sets up configuration file
+- Adds npm scripts to package.json
+- Guides you through OpenAI API key setup
+
+### Generate Documentation
+```bash
+# Using npm script
+npm run docs
+
+# Or directly
+npx auto-docs generate
 ```
+
+Options:
+- `-c, --config <path>`: Custom config file path
+- `-o, --output <path>`: Custom output directory
 
 ## Generated Documentation Structure
 
@@ -137,21 +140,6 @@ Adds two numbers together.
 - `b` (*number*): Second number
 
 **Returns:** (*number*) The sum of a and b
-
-## Classes
-
-### Calculator
-Main calculator class implementation.
-
-#### Methods
-##### multiply(a, b)
-Multiplies two numbers.
-
-**Parameters:**
-- `a` (*number*): First number
-- `b` (*number*): Second number
-
-**Returns:** (*number*) The product of a and b
 ```
 
 ## Contributing
